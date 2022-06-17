@@ -45,7 +45,7 @@ public class Student {
     private String parentEmail;
 
     @OneToMany
-    @JoinColumn(name = "student_id")
+    @JoinColumn(name = "student_id", insertable = false, updatable = false)
     private List<EducationalDetail> educationalDetailList;
 
 }

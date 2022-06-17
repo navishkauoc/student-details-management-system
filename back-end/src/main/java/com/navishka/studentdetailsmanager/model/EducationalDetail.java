@@ -39,6 +39,6 @@ public class EducationalDetail {
     private String grade;
 
     @Column(name = "student_id")
-    private int student;
+    private int studentId;
 
 }
