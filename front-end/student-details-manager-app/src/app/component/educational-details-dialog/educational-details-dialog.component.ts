@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DatePipe } from '@angular/common';
 
 import { EducationalDetail } from 'src/app/model/educational-detail';
@@ -20,11 +20,15 @@ export class EducationalDetailsDialogComponent implements OnInit {
 
   maxDate: any;
 
+  actionButton: string = "Save";
+
   constructor(
     private formBuilder: FormBuilder,
     private educationalDetailsService: EducationalDetailsService,
     private dialogRef: MatDialogRef<EducationalDetailsDialogComponent>,
-    private datepipe: DatePipe
+    private datepipe: DatePipe,
+    //Injecting edit data
+    @Inject(MAT_DIALOG_DATA) public editData: any
   ) { }
 
   ngOnInit(): void {
@@ -37,27 +41,54 @@ export class EducationalDetailsDialogComponent implements OnInit {
     })
 
     this.maxDate = new Date;
+
+    // Setting the data to input field when editing
+    if (this.editData) {
+      this.actionButton = "Update";
+      this.educationalDetailsForm.controls['qualification'].setValue(this.editData.qualification);
+      this.educationalDetailsForm.controls['instituteName'].setValue(this.editData.instituteName);
+      this.educationalDetailsForm.controls['startedDate'].setValue(this.editData.startedDate);
+      this.educationalDetailsForm.controls['endDate'].setValue(this.editData.endDate);
+      this.educationalDetailsForm.controls['grade'].setValue(this.editData.grade);
+    }
   }
 
   get f() { return this.educationalDetailsForm.controls; }
 
   addEducationalDetails() {
-    if (this.educationalDetailsForm.valid) {
-      this.educationalDetail = this.educationalDetailsForm.value;
-      this.educationalDetail.startedDate = this.datepipe.transform(this.educationalDetailsForm.controls['startedDate'].value, 'yyyy-MM-dd')!
-      this.educationalDetail.endDate = this.datepipe.transform(this.educationalDetailsForm.controls['endDate'].value, 'yyyy-MM-dd')!
-      this.educationalDetailsService.addEducationalDetailToList(this.educationalDetail).subscribe(
-        (response) => {
-          this.educationalDetailsForm.reset();
-          this.dialogRef.close();
-        }
-      )
+    if (!this.editData) {
+      if (this.educationalDetailsForm.valid) {
+        this.educationalDetail = this.educationalDetailsForm.value;
+        this.educationalDetail.startedDate = this.datepipe.transform(this.educationalDetailsForm.controls['startedDate'].value, 'yyyy-MM-dd')!
+        this.educationalDetail.endDate = this.datepipe.transform(this.educationalDetailsForm.controls['endDate'].value, 'yyyy-MM-dd')!
+        this.educationalDetailsService.addEducationalDetailToList(this.educationalDetail).subscribe(
+          (response) => {
+            this.educationalDetailsForm.reset();
+            this.dialogRef.close();
+          }
+        )
+      } else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Please fill all required fields'
+        })
+      }
     } else {
-      Swal.fire({
-        icon: 'error',
-        text: 'Please fill all required fields'
-      })
+      this.updateEducationalDetail();
     }
+  }
+
+  updateEducationalDetail() {
+    this.educationalDetail = this.educationalDetailsForm.value;
+    this.educationalDetail.id = this.editData.id;
+    this.educationalDetail.startedDate = this.datepipe.transform(this.educationalDetailsForm.controls['startedDate'].value, 'yyyy-MM-dd')!
+    this.educationalDetail.endDate = this.datepipe.transform(this.educationalDetailsForm.controls['endDate'].value, 'yyyy-MM-dd')!
+    this.educationalDetailsService.updateEducationalDetail(this.educationalDetail).subscribe(
+      (response) => {
+        this.educationalDetailsForm.reset();
+        this.dialogRef.close();
+      }
+    )
   }
 
 }

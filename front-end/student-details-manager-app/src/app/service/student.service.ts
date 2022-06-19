@@ -17,6 +17,14 @@ export class StudentService {
   }
 
   saveStudent(student: Student): Observable<any> {
-    return this.http.post<any>(this.baseUrl + '/add', student)
+    return this.http.post<any>(this.baseUrl + '/add', student);
+  }
+
+  getStudentById(id: number): Observable<any> {
+    return this.http.get<any>(this.baseUrl + '/' + id);
+  }
+
+  updateStudent(id: number, student: Student): Observable<any> {
+    return this.http.put<any>(this.baseUrl + '/update/' + id, student);
   }
 }

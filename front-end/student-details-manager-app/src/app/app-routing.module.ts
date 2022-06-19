@@ -5,7 +5,8 @@ import { StudentListComponent } from './component/student-list/student-list.comp
 
 const routes: Routes = [
   { path: '', component: StudentListComponent, data: { title: 'Student List' } },
-  { path: 'new-student', component: StudentDetailsComponent, data: { title: 'Add New Student' } }
+  { path: 'new-student', component: StudentDetailsComponent, data: { title: 'Add New Student' } },
+  { path: 'view-student/:id', component: StudentDetailsComponent, data: { title: 'View Student' } }
 ];
 
 @NgModule({

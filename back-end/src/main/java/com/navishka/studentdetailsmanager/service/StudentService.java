@@ -14,4 +14,8 @@ public interface StudentService {
     Student saveStudent(Student student);
 
     List<Student> getStudentList();
+
+    Student getStudentById(int id);
+
+    Student updateStudent(int id, Student student);
 }

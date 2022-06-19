@@ -76,4 +76,54 @@ public class StudentController {
             );
         }
     }
+
+    @GetMapping("/{id}")
+    private ResponseEntity<Response> getStudent(@PathVariable int id) {
+        try {
+            Student foundStudent = studentService.getStudentById(id);
+
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .status(OK)
+                            .statusCode(OK.value())
+                            .message("Student Details successfully retrieved")
+                            .data(of("student", foundStudent))
+                            .build()
+            );
+
+        } catch (Exception e) {
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .status(INTERNAL_SERVER_ERROR)
+                            .statusCode(INTERNAL_SERVER_ERROR.value())
+                            .message(e.getMessage())
+                            .build()
+            );
+        }
+    }
+
+    @PutMapping("/update/{id}")
+    private ResponseEntity<Response> updateStudent(@PathVariable int id, @RequestBody Student student) {
+        try {
+            Student foundStudent = studentService.updateStudent(id, student);
+
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .status(OK)
+                            .statusCode(OK.value())
+                            .message("Student Details successfully updated")
+                            .data(of("student", foundStudent))
+                            .build()
+            );
+
+        } catch (Exception e) {
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .status(INTERNAL_SERVER_ERROR)
+                            .statusCode(INTERNAL_SERVER_ERROR.value())
+                            .message(e.getMessage())
+                            .build()
+            );
+        }
+    }
 }

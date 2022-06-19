@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { EducationalDetailsService } from './service/educational-details.service';
 
 @Component({
   selector: 'app-root',
@@ -12,13 +12,14 @@ export class AppComponent {
 
   constructor(
     private router: Router,
-    private dialog: MatDialog
+    private educationalDetailsService: EducationalDetailsService
   ) { }
 
   ngOnInit() {
   }
 
   navigateToAddNewStudent() {
+    this.educationalDetailsService.emptyEducationalDetailsList();
     this.router.navigateByUrl('/new-student');
   }
 
