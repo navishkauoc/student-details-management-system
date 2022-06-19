@@ -1,0 +1,19 @@
+.student-form-container .mat-form-field+.mat-form-field {
+    margin-left: 10px;
+}
+
+mat-form-field {
+    width: 32.5%;
+}
+
+h2 {
+    margin: 20px;
+}
+
+.student-form {
+    margin: 20px;
+}
+
+table {
+    width: 100%;
+}

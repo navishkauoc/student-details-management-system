@@ -8,13 +8,23 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTableModule } from '@angular/material/table';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { StudentDetailsComponent } from './component/student-details/student-details.component';
+import { StudentListComponent } from './component/student-list/student-list.component';
+import { EducationalDetailsDialogComponent } from './component/educational-details-dialog/educational-details-dialog.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    StudentDetailsComponent,
+    StudentListComponent,
+    EducationalDetailsDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -25,7 +35,11 @@ import { AppComponent } from './app.component';
     MatButtonModule,
     MatTableModule,
     MatPaginatorModule,
-    HttpClientModule
+    HttpClientModule,
+    MatDialogModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]
