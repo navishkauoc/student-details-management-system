@@ -10,6 +10,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { EducationalDetailsDialogComponent } from '../educational-details-dialog/educational-details-dialog.component';
 import { Student } from 'src/app/model/student';
 import { StudentService } from 'src/app/service/student.service';
+import { EducationalDetailsService } from 'src/app/service/educational-details.service';
+import { EducationalDetail } from 'src/app/model/educational-detail';
 
 @Component({
   selector: 'app-student-details',
@@ -26,12 +28,14 @@ export class StudentDetailsComponent implements OnInit {
   studentForm!: FormGroup;
 
   student !: Student;
+  educationalDetailsList: EducationalDetail[] = [];
 
   constructor(
     private dialog: MatDialog,
     private router: Router,
     private formBuilder: FormBuilder,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private educationalDetailsService: EducationalDetailsService
   ) {
   }
 
@@ -49,11 +53,12 @@ export class StudentDetailsComponent implements OnInit {
 
   openDialog() {
     const dialogRef = this.dialog.open(EducationalDetailsDialogComponent, {
-      width: '75%'
+      width: '50%'
     });
 
     dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
+      this.getEducationalDetails();
     });
   }
 
@@ -63,27 +68,43 @@ export class StudentDetailsComponent implements OnInit {
 
   get f() { return this.studentForm.controls; }
 
+  getEducationalDetails() {
+    this.educationalDetailsService.getEducationalDetailsList().subscribe(
+      (response) => {
+        this.dataSource = new MatTableDataSource(response);
+        this.dataSource.paginator = this.paginator;
+        this.educationalDetailsList = response;
+      }
+    );
+  }
+
   saveStudent() {
-    console.log(this.studentForm.value)
-    console.log(this.studentForm.valid)
     if (this.studentForm.valid) {
       this.student = this.studentForm.value;
-      this.studentService.saveStudent(this.student).subscribe(
-        (response) => {
-          console.log(response)
-          if (response.statusCode == 201) {
-            Swal.fire({
-              icon: 'success',
-              text: response.message
-            })
-          } else {
-            Swal.fire({
-              icon: 'error',
-              text: response.message
-            })
+      this.student.educationalDetailList = this.educationalDetailsList;
+      if (this.student.educationalDetailList.length > 0) {
+        this.studentService.saveStudent(this.student).subscribe(
+          (response) => {
+            if (response.statusCode == 201) {
+              Swal.fire({
+                icon: 'success',
+                text: response.message
+              })
+              this.router.navigate(['/']);
+            } else {
+              Swal.fire({
+                icon: 'error',
+                text: response.message
+              })
+            }
           }
-        }
-      )
+        )
+      } else {
+        Swal.fire({
+          icon: 'error',
+          text: 'Please add at least one Education Details set'
+        })
+      }
 
     } else {
       Swal.fire({

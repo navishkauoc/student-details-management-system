@@ -9,5 +9,5 @@ export class Student {
     parentName!: string;
     parentContactNumber!: string;
     parentEmail!: string;
-    educationalDetail!: EducationalDetail[];
+    educationalDetailList!: EducationalDetail[];
 }

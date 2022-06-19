@@ -1,0 +1,49 @@
+<h2 mat-dialog-title>Add New Student</h2>
+<div class="student-form">
+
+    <form [formGroup]="educationalDetailsForm">
+        <div class="student-form-container">
+            <mat-form-field appearance="outline">
+                <mat-label>Qualification</mat-label>
+                <input formControlName="qualification" matInput placeholder="Qualification" required>
+                <mat-error *ngIf="f['qualification'].invalid">Please enter a Qualification</mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Institute Name</mat-label>
+                <input formControlName="instituteName" matInput placeholder="Institute Name" required>
+                <mat-error *ngIf="f['instituteName'].invalid">Please enter a valid Institute Name</mat-error>
+            </mat-form-field>
+        </div>
+        <div class="student-form-container">
+            <mat-form-field appearance="outline">
+                <mat-label>Started Date</mat-label>
+                <input formControlName="startedDate" matInput [matDatepicker]="picker" placeholder="Started Date" required [max]="maxDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+                <mat-error *ngIf="f['startedDate'].invalid">Please enter a valid Started Date</mat-error>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>End Date</mat-label>
+                <input formControlName="endDate" matInput [matDatepicker]="picker1" placeholder="End Date" required [max]="maxDate">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+                <mat-error *ngIf="f['endDate'].invalid">Please enter a valid End Date</mat-error>
+              </mat-form-field>
+        </div>
+        <div class="student-form-container">
+            <mat-form-field appearance="outline">
+                <mat-label>Grade</mat-label>
+                <input formControlName="grade" matInput placeholder="Grade" required>
+                <mat-error *ngIf="f['grade'].invalid">Please enter a valid Grade</mat-error>
+            </mat-form-field>
+        </div>
+    </form>
+
+    <div mat-dialog-action [align]="'end'">
+        <button mat-raised-button color="warn" mat-dialog-close>Close</button>
+        <button style="margin-left: 8px;" (click)="addEducationalDetails()" mat-raised-button
+            color="primary">Save</button>
+    </div>
+
+</div>
