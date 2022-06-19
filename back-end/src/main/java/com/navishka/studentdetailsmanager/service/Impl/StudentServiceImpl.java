@@ -10,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 /**
  * @author Navishka
@@ -37,6 +38,21 @@ public class StudentServiceImpl implements StudentService {
             }
 
             return savedStudent;
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
+    }
+
+    @Override
+    public List<Student> getStudentList() {
+        try {
+            log.info("Retrieving Student list");
+
+            List<Student> studentList = studentRepository.findAll();
+
+            return studentList;
         } catch (Exception e) {
             log.error(e.getMessage());
             e.printStackTrace();
