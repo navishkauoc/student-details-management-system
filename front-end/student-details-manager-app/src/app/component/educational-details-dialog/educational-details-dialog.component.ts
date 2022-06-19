@@ -20,7 +20,7 @@ export class EducationalDetailsDialogComponent implements OnInit {
 
   maxDate: any;
 
-  actionButton: string = "Save";
+  actionButton: string = "Add";
 
   constructor(
     private formBuilder: FormBuilder,
