@@ -29,13 +29,26 @@ public class StudentController {
     }
 
     @PostMapping(value = "/add")
-    private ResponseEntity<Student> addStudent(@RequestBody Student student) {
+    private ResponseEntity<Response> addStudent(@RequestBody Student student) {
         try {
             Student savedStudent = studentService.saveStudent(student);
 
-            return new ResponseEntity<>(savedStudent, HttpStatus.CREATED);
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .status(CREATED)
+                            .statusCode(CREATED.value())
+                            .message("Student details successfully added")
+                            .data(of("student", savedStudent))
+                            .build()
+            );
         } catch (Exception e) {
-            throw e;
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .status(INTERNAL_SERVER_ERROR)
+                            .statusCode(INTERNAL_SERVER_ERROR.value())
+                            .message(e.getMessage())
+                            .build()
+            );
         }
     }
 

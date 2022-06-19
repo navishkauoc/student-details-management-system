@@ -32,10 +32,15 @@ public class StudentServiceImpl implements StudentService {
             log.info("Saving new Student: {}", student.getFirstName());
             Student savedStudent = studentRepository.save(student);
 
-            for (EducationalDetail educationalDetail : student.getEducationalDetailList()) {
-                educationalDetail.setStudentId(savedStudent.getId());
-                educationalDetailRepository.save(educationalDetail);
+            if (student.getEducationalDetailList() != null) {
+                for (EducationalDetail educationalDetail : student.getEducationalDetailList()) {
+                    educationalDetail.setStudentId(savedStudent.getId());
+                    educationalDetailRepository.save(educationalDetail);
+                }
+            } else {
+                throw new RuntimeException("At least one set of Educational Details is required");
             }
+
 
             return savedStudent;
         } catch (Exception e) {
