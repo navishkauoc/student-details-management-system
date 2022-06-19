@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import Swal from 'sweetalert2';
 
 import { StudentService } from 'src/app/service/student.service';
 
@@ -33,6 +34,25 @@ export class StudentListComponent implements OnInit {
       (response) => {
         this.dataSource = new MatTableDataSource(response.data.studentList)
         this.dataSource.paginator = this.paginator
+      }
+    )
+  }
+
+  deleteStudent(row: any) {
+    this.studentService.deleteStudent(row.id).subscribe(
+      (response) => {
+        if (response.statusCode == 200) {
+          this.getStudentList();
+          Swal.fire({
+            icon: 'success',
+            text: response.message
+          })
+        } else {
+          Swal.fire({
+            icon: 'error',
+            text: response.message
+          })
+        }
       }
     )
   }

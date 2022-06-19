@@ -105,14 +105,39 @@ public class StudentController {
     @PutMapping("/update/{id}")
     private ResponseEntity<Response> updateStudent(@PathVariable int id, @RequestBody Student student) {
         try {
-            Student foundStudent = studentService.updateStudent(id, student);
+            Student updatedStudent = studentService.updateStudent(id, student);
 
             return ResponseEntity.ok(
                     Response.builder()
                             .status(OK)
                             .statusCode(OK.value())
                             .message("Student Details successfully updated")
-                            .data(of("student", foundStudent))
+                            .data(of("student", updatedStudent))
+                            .build()
+            );
+
+        } catch (Exception e) {
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .status(INTERNAL_SERVER_ERROR)
+                            .statusCode(INTERNAL_SERVER_ERROR.value())
+                            .message(e.getMessage())
+                            .build()
+            );
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    private ResponseEntity<Response> deleteStudent(@PathVariable int id) {
+        try {
+            Boolean deleteStatus = studentService.deleteStudent(id);
+
+            return ResponseEntity.ok(
+                    Response.builder()
+                            .status(OK)
+                            .statusCode(OK.value())
+                            .message("Student Details successfully deleted")
+                            .data(of("deleted", deleteStatus))
                             .build()
             );
 

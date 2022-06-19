@@ -105,7 +105,7 @@ public class StudentServiceImpl implements StudentService {
                         throw new DuplicateEmailException("Student Email Already Registered");
                     }
                 }
-                
+
                 student.setId(foundStudent.getId());
                 Student savedStudent = studentRepository.save(student);
 
@@ -120,6 +120,20 @@ public class StudentServiceImpl implements StudentService {
             } else {
                 throw new RuntimeException("Cannot find Student with the given ID");
             }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
+        }
+    }
+
+    @Override
+    public Boolean deleteStudent(int id) {
+        try {
+            educationalDetailRepository.deleteAllByStudentId(id);
+
+            studentRepository.deleteById(id);
+
+            return Boolean.TRUE;
         } catch (Exception e) {
             log.error(e.getMessage());
             throw e;

@@ -18,4 +18,6 @@ public interface StudentService {
     Student getStudentById(int id);
 
     Student updateStudent(int id, Student student);
+
+    Boolean deleteStudent(int id);
 }
